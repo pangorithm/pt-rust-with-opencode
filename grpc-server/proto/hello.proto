@@ -1,0 +1,147 @@
+// ============================================================================
+// Protocol Buffers (proto) 파일
+// ============================================================================
+//
+// proto 파일은 gRPC 서비스와 메시지 구조를 정의하는 인터페이스 파일 언어 (IDL)
+// Java 의 Interface 나 TypeScript 의 interface 와 유사한 개념
+//
+// gRPC 는 proto 파일을 컴파일하여 각 언어별 코드를 생성합니다.
+// Rust 의 경우 tonic-build 가 .proto 파일을 컴파일하여 Rust 코드를 생성
+//
+// ============================================================================
+
+// proto3: Protocol Buffers 버전 3 버전 사용
+syntax = "proto3";
+
+// Java 패키지명 (Rust 에서는 모듈 모듈 경로로 사용됨
+option java_package = "com.example.hello";
+
+// Java 클래스명 (Rust 에서는 사용되지함)
+option java_outer_classname = "HelloWorldProto";
+
+// ============================================================================
+// 서비스 package 정의
+// ============================================================================
+//
+// package: Rust 의 모듈 경로로 변환됩니다
+// hello package 는 -> tonic::hello:: 모듈 모듈 모듈
+
+package hello;
+
+// ============================================================================
+// 2. 메시지 정의 (Message)
+// ============================================================================
+//
+// message: Rust 의 struct 와 유사
+// Java 의 class 나 JavaScript 의 interface 와 유사 가능
+//
+// 필드 규칙:
+// - 각 필드는 고유한 번호 (tag) 를 가져야 함
+// - tag 는 proto 파일의 일부분으로, 변경하면 안  (호환성 문제)
+// - 1-15: 1 바이트 인코딩 (소량 tag 에 권장)
+// - 16-2047: 2 바이트 인코딩
+
+// 요청 메시지: 클라이언트 -> 서버
+message HelloRequest {
+    // string 타입type: UTF-8 문자열
+    // name: 클라이언트가 이름
+    string name = 1;
+
+    // int32: 32 비트 정수
+    // age: 클라이언트의 나이 (선택사항
+    // (default 는 0)
+    int32 age = 2;
+}
+
+// 응답 메시지: 서버 -> 클라이언트
+message HelloResponse {
+    // greeting: 서버가 생성한 인사말
+    string greeting = 1;
+
+    // timestamp: 응답이 생성된 시간 (Unix timestamp, 초 단위)
+    int64 timestamp = 2;
+
+    // server_name: 서버 이름 (디버깅용)
+    string server_name = 3;
+}
+
+// ============================================================================
+// 3. 서비스 정의 (Service)
+// ============================================================================
+//
+// service: gRPC 서비스 인터페이스
+// Java 의 @Service 나 JavaScript 의 gRPC service 정의와 유사
+//
+// RPC 메드 규칙:
+// - rpc: Remote Procedure Call (원격 절차 호출)
+// - stream: 양방향 스트림 지원
+// - returns: 반환 타입
+
+service HelloService {
+    // ========================================================================
+    // 1. unary RPC (1 대 1 호출)
+    // ========================================================================
+    //
+    // 가장 일반적인 gRPC 호출 방식
+    // 클라이언트가 한 번 요청하면 서버가 한 번 응답
+    // HTTP 의 POST/GET과 유사
+    //
+    // Java 의: Future<Response> call(Request request)
+    // JavaScript: client.method(request, callback)
+
+    // greet: 인사 서비스 생성
+    // - HelloRequest 를를 받아수신
+    // - HelloResponse 를 반환
+    rpc Greet (HelloRequest) returns (HelloResponse);
+
+    // ========================================================================
+    // 2. Server streaming RPC (1 대 N 호출)
+    // ========================================================================
+    //
+    // 클라이언트가 한 번 요청하면 서버가 여러 번 응답
+    // HTTP Streaming Server-Sent Events (SSE) 나 WebSocket 과 유사
+    //
+    // Java: Flux<Response> call(Request request)
+    // JavaScript: const stream = client.method(request);
+    //             for await (const response of stream) { ... }
+
+    // greetStream: 여러 번 인사 메시지 전송
+    // - HelloRequest 를 수신
+    // - 여러HelloResponse 를림을 반환
+    rpc GreetStream (HelloRequest) returns (stream HelloResponse);
+
+    // ========================================================================
+    // 3. Client streaming RPC (N 대 1 호출)
+    // ========================================================================
+    //
+    // 클라이언트가 여러 번 요청하면 서버가 한 번 응답
+    // 파일 업로드나 실시간 데이터 수집에 유용
+    //
+    // Java: Response call(Flux<Request> requestStream)
+    // JavaScript: const call = client.method();
+    //             call.write(request1);
+    //             call.write(request2);
+    //             call.close();
+
+    // greetClientStream: 클라이언트에서 여러 요청 전송
+    // - HelloRequest 스트림을 수신
+    // - HelloResponse 를 반환
+    rpc GreetClientStream (stream HelloRequest) returns (HelloResponse);
+
+    // ========================================================================
+    // 4. Bidirectional streaming RPC (N 대 N 호출)
+    // ========================================================================
+    //
+    // 클라이언트와 서버가 양방향으로 여러 번 메시지 교환
+    // WebSocket 의 양방향 통신과 유사
+    //
+    // Java: Flux<Response> call(Flux<Request> requestStream)
+    // JavaScript: const stream = client.method();
+    //             stream.on('data', handleResponse);
+    //             stream.write(request);
+
+    // greetBidirectional: 양방향 스트림
+    // - HelloRequest 스트림을 수신
+    // - HelloResponse 스트림을 반환
+    rpc GreetBidirectional (stream HelloRequest) returns (stream HelloResponse);
+}

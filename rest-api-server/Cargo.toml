@@ -1,0 +1,31 @@
+# Cargo.toml: Rust 프로젝트의 manifest 파일 (Java 의 pom.xml 이 JavaScript 의 package.json 과 유사)
+# 이 파일에는 프로젝트의 메타데이터와 의존성을 정의합니다.
+
+[package]
+name = "rest-api-server"          # 프로젝트 이름
+version = "0.1.0"                 # 프로젝트 버전
+edition = "2021"                  # Rust 에디션 (2021 이 최신 안정 버전)
+# edition: Rust 의 언어 기능을 세 설정. 2021 에디션은 async/await, 개선 개선된 타입 추론 등 최신 기능을 포함
+
+[dependencies]
+# 의존성 (라이 라이브러리) 정의. Java 의 Maven dependency 나 JavaScript 의 npm package 와 유사
+
+# axum: 현대 현대적인 Rust 웹 프레임워크 (Express.js 또는 Spring Web 과 유사)
+# HTTP 요청/응답 처리, 라우팅, middleware 등을
+axum = "0.7"
+
+# tokio: Rust 의 주요 비동기 런타임 (Node.js 의 event loop 와 유사한 개념)
+# async/await 코드를 실제로 실행하기 위한 런타임
+tokio = { version = "1", features = ["full"] }
+# features = ["full"]: 모든 기능 포함 (학습용으로는 편리함)
+
+# serde: Rust 의 직렬화/역 역직렬화 프레임워크 (Jackson or JS 의 JSON.stringify/parse 와 유사)
+# Rust 데이터를 JSON 으로 변환
+serde = { version = "1", features = ["derive"] }
+# derive: #[derive(Serialize, Deserialize)] 매크로 사용 가능
+
+# serde_json: JSON 전용 직 serde 기능 (JS 의 JSON 객체와 유사)
+serde_json = "1"
+
+# tower: middleware 와 서비스 추상화를 위한 라이브러리 (axum 이 내부적으로 사용)
+tower = "0.4"
