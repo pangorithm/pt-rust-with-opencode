@@ -1,32 +1,16 @@
-# Cargo.toml: gRPC 서버 프로젝트 manifest
-
 [package]
 name = "grpc-server"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# tokio: 비동기 런타임
-tokio = { version = "1", features = ["full"] }
-
-# tonic: Rust 의 gRPC 프레임워크 (Java 의 grpc-java 나 JavaScript 의 @grpc/grpc-js 와 유사)
+# Tonic: gRPC 구현을 위한 강력한 프레임워크
 tonic = "0.11"
-
-# prost: Protocol Buffers 직 Rust 구현 (gRPC 의 데이터 직
+# Prost: Protocol Buffers를 Rust 구조체로 변환해 직렬화/역직렬화 라이브러리
 prost = "0.12"
-
-# tonic-build: .proto 파일을 컴파일하여 Rust 코드를 생성하는 빌드 도구
-tonic-build = "0.11"
-
-# anyhow: 에러 처리를 위한 라이브퍼 타입
-anyhow = "1"
-
-# tracing: 로깅과 추적 (Java 의 SLF4J 나 JavaScript 의 winston 과 유사)
-tracing = "0.1"
-
-# tracing-subscriber: tracing 의자 (로깅 출력 설정)
-tracing-subscriber = "0.3"
+# Tokio: 비동기 런타임
+tokio = { version = "1.0", features = ["full"] }
 
 [build-dependencies]
-# 빌드 시에 실행되는 빌드 스크립트 (build.rs) 에서 의존성
+# 컴드 시점에 .proto 파일을 컴파일하여 Rust 코드를 생성하기 위한 라이브러리
 tonic-build = "0.11"

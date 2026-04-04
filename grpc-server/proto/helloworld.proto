@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package helloworld;
+
+// Greeter 서비스 정의
+// JavaScript/Java의에서 인터페이스를 정의하는 것과 유사합니다.
+service Greeter {
+  // 사용자의 이름을 받아 인사를 반환하는 RPC 메서드
+  rpc SayHello (HelloRequest) returns (HelloReply);
+}
+
+// 요청 메시지 구조체
+message HelloRequest {
+  string name = 1;
+}
+
+// 응답 메시지 구조체
+message HelloReply {
+  string message = 1;
+}

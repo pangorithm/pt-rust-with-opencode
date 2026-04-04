@@ -1,24 +1,14 @@
-# Cargo.toml: WebSocket 서버 프로젝트 manifest
-
 [package]
 name = "websocket-server"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# tokio: 비동기 런타임 (WebSocket 처리를 위한 핵심)
-tokio = { version = "1", features = ["full"] }
-
-# tokio-tungstenite: WebSocket 프로토콜 구현
-# tungstenite 는 WebSocket 라이브러리, tokio-tungstenite 는 비동기 버전
+# Tokio: 비동기 런타임
+tokio = { version = "1.0", features = ["full"] }
+# tokio-tungstenite: Tokio 기반의 WebSocket 라이브러리
 tokio-tungstenite = "0.21"
-
-# axum: HTTP 요청 처리 및 WebSocket 업그레이드
-axum = "0.7"
-
-# serde: JSON 처리
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-
-# tower: middleware
-tower = "0.4"
+# futures-util: Stream과 Sink 트레이트를 사용하기 위한 유틸리티
+futures-util = "0.3"
+# tungstenite: WebSocket 메시지 타입 정의
+tungstenite = "0.21"
