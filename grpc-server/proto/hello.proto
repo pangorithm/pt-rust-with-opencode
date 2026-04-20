@@ -2,6 +2,10 @@
 // Protocol Buffers (proto) 파일
 // ============================================================================
 //
+// NOTE: 이 파일은 build.rs에서 컴파일되지 않습니다 (참고용).
+// build.rs가 컴파일하는 파일: helloworld.proto
+// 이 파일은 스트리밍 RPC 예제를 담고 있으므로 학습 목적으로 남겨두었습니다.
+//
 // proto 파일은 gRPC 서비스와 메시지 구조를 정의하는 인터페이스 파일 언어 (IDL)
 // Java 의 Interface 나 TypeScript 의 interface 와 유사한 개념
 //

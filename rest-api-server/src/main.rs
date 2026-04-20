@@ -86,7 +86,7 @@ async fn create_user(State(state): State<Arc<AppState>>, Json(new_user): Json<Us
 // --- 3. 메인 함수 (Server Setup) ---
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 공유 상태 초기화
     // Arc(Atomic Reference Counted)는 여러 스레드 간 소유권을
     // 안전하게 공유하기 위해 사용합니다.
@@ -111,12 +111,14 @@ async fn main() {
         .with_state(shared_state);
 
     // 서버 실행 환경 설정
-    let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = TcpListener::bind("0.0.0.0:3000").await?;
     println!("🚀 REST API 서버가 http://localhost:3000 에서 시작되었습니다.");
     println!("   - GET  /users (사용자 목록 조회)");
     println!("   - POST /users (사용자 생성)");
     println!("   - GET  /users/:id (특정 사용자 조회)");
 
     // 서버 시작
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app).await?;
+
+    Ok(())
 }

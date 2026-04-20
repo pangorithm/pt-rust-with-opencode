@@ -14,7 +14,7 @@ use hello_world::{HelloReply, HelloRequest};
 use tonic::{transport::Server, Request, Response, Status};
 
 // 2. 서비스 구현체 정의
-// Java의 서비스 구현(Service Implementation)과 매우한 역할을 합니다.
+// Java의 서비스 구현(Service Implementation)과 매우 유사한 역할을 합니다.
 // 구조체 `MyGreeter`를 정의하고, 이를 `Greeter` 트레이트(Trait)에 구현하도록 합니다.
 #[derive(Debug, Default)]
 pub struct MyGreeter {}
@@ -35,7 +35,7 @@ impl Greeter for MyGreeter {
         println!("Got a request from: {:?}", request.remote_addr());
 
         // 요청 데이터 추출
-        // `request.into_inner()`를 사용하여 사용하여 `를 `Request`를 벗겨내고 실제 데이터를 반환합니다.
+        // `request.into_inner()`를 사용하여 Request를 벗겨내고 실제 데이터를 추출합니다.
         let in_data = request.into_inner();
 
         // 비즈니스 로직: 받은 이름에 인사를 붙여 응답 생성
@@ -51,8 +51,8 @@ impl Greeter for MyGreeter {
 // 4. 메인 함수 (Server Startup)
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 서버 구 구동될 주소 설정
-    let addr = "[::http://localhost:50051]".parse()?;
+    // 서버 구동될 주소 설정
+    let addr = "[::]:50051".parse()?;
 
     // 서비스 구현체 인스턴스 생성
     let greeter = MyGreeter::default();
