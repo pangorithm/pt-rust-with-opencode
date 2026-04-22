@@ -192,6 +192,7 @@ fn section_3_logical_operators() {
 // a >>> b              (Rust에 없음)        오른쪽 시프트 (부호 무시)
 // ~a                   (!a 아님!)           NOT (비트 단위, Rust에 없음)
 
+#[allow(non_snake_case)]
 fn section_4_bitwise_operators() {
     println!("Section 4 - Bitwise Operators");
 
@@ -1158,8 +1159,7 @@ fn section_16_char_methods() {
 // 메인 함수 - 모든 섹션 실행
 // ============================================================
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() {
     println!("============================================");
     println!("  Rust 연산자 & 메서드 완전 정복");
     println!("============================================\n");
@@ -1214,6 +1214,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n============================================");
     println!("All 16 sections complete!");
     println!("============================================");
-
-    Ok(())
 }
