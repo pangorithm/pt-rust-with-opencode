@@ -93,14 +93,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.8"
-tokio = { version = "1", features = ["full"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-tower = "0.5"
-tower-http = { version = "0.6", features = ["cors"] }
-tracing = "0.1"
-tracing-subscriber = "0.3"
+axum = "0.7"
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 ```
 
 ### grpc-server (tonic 기반 gRPC 서버)
@@ -113,10 +109,11 @@ edition = "2021"
 
 [dependencies]
 tonic = "0.12"
-tokio = { version = "1", features = ["full"] }
-tokio-stream = "0.1"
 prost = "0.13"
-prost-types = "0.13"
+tokio = { version = "1.0", features = ["full"] }
+
+[build-dependencies]
+tonic-build = "0.12"
 ```
 
 ### websocket-server (tokio-tungstenite 기반 WebSocket 서버)
@@ -128,11 +125,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tokio-tungstenite = "0.26"
-tokio = { version = "1", features = ["full"] }
-tokio-stream = "0.1"
+tokio-tungstenite = "0.21"
+tokio = { version = "1.0", features = ["full"] }
 futures-util = "0.3"
-tracing = "0.1"
 ```
 
 ---
