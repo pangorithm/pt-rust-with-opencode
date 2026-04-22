@@ -2,9 +2,9 @@
 //! 이 예제는 JavaScript 개발자가 익숙한 WebSocket 모델을 Rust의 비동기 Stream(Stream)/ 및 싱크(Sink) 모델로 어떻게 구현하는지 이해하는 것을 목표로 합니다.
 
 use futures_util::{
-     sink::SinkExt,     // Stream에서 메시지를 보내기 위한 send() 메서드를 위한 트레이트
-    stream::StreamExt, // Stream으로부터 메시지를 받기(next()) 위한 트레이트
-};
+     sink::SinkExt, // Stream에서 메시지를 보내기 위한 send() 메서드를 위한 트레이트
+     stream::StreamExt, // Stream으로부터 메시지를 받기(next()) 위한 트레이트
+ };
 use std::net::SocketAddr;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
@@ -19,9 +19,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "🚀 WebSocket 에코 서버가 ws://{} 에서 시작되었습니다.",
         addr
     );
-      println!("   - 클라이언트가 연결되면 받은 메시지를 그대로 다시 돌려줍니다.");
+    println!("   - 클라이언트가 연결되면 받은 메시지를 그대로 다시 돌려줍니다.");
 
-    // 2. 서버 `TcpListener`를 통해 클라이언트의 연결 요청을 지속적으로 기다립니다.
+    // 2. 서버 TcpListener를 통해 클라이언트의 연결 요청을 지속적으로 기다립니다.
     while let Ok((stream, addr)) = listener.accept().await {
         println!("새로운 클라이언트 연결됨 {}", addr);
 

@@ -26,7 +26,7 @@ pub struct MyGreeter {}
 impl Greeter for MyGreeter {
     // `SayHello` 메서드 RPC 구현
     // - `&self`: 인스턴스 메서드에 대한 참조
-    // - `Request<HelloRequest>`: 클라이언트로부터 온 데이터( (gRPC 데이터 포함)
+    // - `Request<HelloRequest>`: 클라이언트로부터 온 데이터 (gRPC 데이터 포함)
     // - `Result<Response<HelloReply>, Status>`: 결과값은 성공 응답 또는 gRPC 에러 상태(Status)
     async fn say_hello(
         &self,
