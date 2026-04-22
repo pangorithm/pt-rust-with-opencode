@@ -22,7 +22,7 @@
 // Rust의 가장 중요한 철학 세 가지:
 // 1. 메모리 안전성: 가비지 컬렉션 없이 소유권으로 메모리 안전성 보장
 // 2. 동시성 안전성: 컴파일타임에 데이터 경합(Data Race) 방지
-// 3. 제로-cost 추상화: 고수준 추상화가 низко수준 성능을 해치지 않음
+// 3. 제로-cost 추상화: 고수준 추상화가 낮은 수준 성능을 해치지 않음
 
 // ============================================================
 // Section 1: 변수 선언 (Variable Declarations)
@@ -558,7 +558,7 @@ fn section_5_ownership() {
     println!("   Clone: s3 = {}, s4 = {}", s3, s4); // 둘 다 사용 가능
     // JavaScript 개발자를 위한 설명: JavaScript의 `JSON.parse(JSON.stringify(obj))`와 유사하지만
     // Rust에서는 성능 고려로 명시적으로 clone()을 호출해야 합니다
-    // clone()은昂贵的操作 - O(n) 시간복잡도 (n = 문자열 길이)
+    // clone()은 비용이 높은 연산 - O(n) 시간복잡도 (n = 문자열 길이)
 
     // i32와 같은 기본 타입은 스택에 저장되므로, Move 대신 Copy가 발생
     //
@@ -688,8 +688,8 @@ fn section_6_references_and_borrowing() {
     // JavaScript: const a = {x: 1};
     //             setTimeout(() => { a.x = 2; }, 100);
     //             setInterval(() => { console.log(a.x); }, 50);
-    //             // 런타임에竞합 발생 가능
-    // Rust: 컴파일타임에 이런竞합을 방지합니다.
+           //             // 런타임에 경합 발생 가능
+    // Rust: 컴파일타임에 이런 경합을 방지합니다.
 }
 
 fn calculate_length(s: &String) -> usize {
@@ -958,7 +958,7 @@ fn section_8_enums_and_match() {
         None => println!("   None (null/undefined에 해당)"),
         // None은 JavaScript의 null 또는 undefined에 해당합니다.
     }
-    // Rust의 match는 항상 Some 또는 None 둘中的一个을 처리합니다.
+    // Rust의 match는 항상 Some 또는 None 둘 중 하나를 처리합니다.
     // JavaScript: if (x === null)는 잊을 수 있지만,
     // Rust: match는 컴파일타임에 모든 경우를 처리했는지 확인합니다.
 }
@@ -1386,7 +1386,7 @@ fn section_11_closures() {
 // Trait의 주요 용도:
 //   1. 공통 행동 정의: 여러 타입이 같은 메서드를 가지도록 강제
 //   2. 제네릭 제한: 특정 trait을 구현한 타입만 허용
-//   3._polymorphism_: 서로 다른 타입을的统一된 인터페이스로 처리
+//   3. polymorphism: 서로 다른 타입을 통일된 인터페이스로 처리
 //
 // 메모리 레이아웃:
 //   trait Drawable { fn draw(&self) -> String; }
@@ -1472,7 +1472,7 @@ fn section_12_traits() {
     // Rust:
     let shapes: Vec<Box<dyn Drawable>> = vec![
         // Box<dyn Drawable>는 "trait object"입니다.
-        // 서로 다른 타입(Circle, Rectangle)을的统一된 타입으로 저장합니다.
+        // 서로 다른 타입(Circle, Rectangle)을 통일된 타입으로 저장합니다.
         // JavaScript: [new Circle(5), new Rectangle(10, 20)]
         // Rust: Vec<Box<dyn Drawable>>
         Box::new(Circle { radius: 5.0 }),   // JavaScript: new Circle(5)
@@ -1654,7 +1654,7 @@ fn section_13_error_handling() {
 // │ function identity(x) {   │ fn identity<T>(value: T) -> T {        │
 // │   return x;               │   value                                 │
 // │ }                         │ }                                      │
-// │ 타입安全检查 없음         │ 컴파일타임에 타입 검증                  │
+// │ 타입 안전성 없음            │ 컴파일타임에 타입 검증                  │
 // │ identity(42) → 42        │ identity(42) → 42                      │
 // │ identity("hello") → "h"  │ identity("hello") → "hello"            │
 // └──────────────────────────┴─────────────────────────────────────────┘
@@ -1674,7 +1674,7 @@ fn section_14_generics() {
     //
     // JavaScript:
     //   function identity(x) {
-    //     return x;  // 어떤 타입든 작동하지만 타입安全检查 없음
+    //     return x;  // 어떤 타입든 작동하지만 타입 안전성 없음
     //   }
     //   identity(42); // 42
     //   identity("hello"); // "hello"
@@ -1682,7 +1682,7 @@ fn section_14_generics() {
     // Rust:
     fn identity<T>(value: T) -> T {
         // <T>는 "T라는 타입 매개변수"를 의미합니다.
-        // T는 호출할 때具体的な 타입으로 결정됩니다.
+        // T는 호출할 때 구체적인 타입으로 결정됩니다.
         // JavaScript: function identity(x) { return x; } (타입 없음)
         // Rust: fn identity<T>(value: T) -> T (타입 안전)
         value // 모든 타입으로 작동
@@ -1716,7 +1716,7 @@ fn section_14_generics() {
     //   const arr = [10, 20, 30];
     //   function first(arr) { return arr[0]; }
     //   first(arr); // 10
-    //   // 타입安全检查 없음: first("string") → undefined
+    //   // 타입 안전성 없음: first("string") → undefined
     // Rust:
     fn first<T>(slice: &[T]) -> &T {
         // &[T] → T 타입의 슬라이스 참조 (JavaScript의 배열 참조)
@@ -2735,7 +2735,7 @@ mod tests {
 // │ arr.slice(3)             │ arr.iter().skip(3).copied().collect()  │
 // │ arr.entries()            │ arr.iter().enumerate()                 │
 // │ [...arr1, ...arr2]       │ arr1.iter().chain(arr2.iter())         │
-// │ function* range() { yield │ Iterator는 Lazy (collect直到 실행)   │
+// │ function* range() { yield │ Iterator는 Lazy (collect까지 실행 안 함) │
 // └──────────────────────────┴─────────────────────────────────────────┘
 //
 // Lazy Evaluation (지연 평가):
@@ -2758,7 +2758,7 @@ mod tests {
 //   2. Consumer (소비자) - Eager, 즉시 실행 함
 //      .collect(), .for_each(), .sum(), .count() 등
 //      이 메서드들이 Iterator의 "트리거"로, 이때じめて 실제 처리가 실행됨
-//   JavaScript의 map/filter는 모두 즉시 실행되지만 (adapter + consumer가合一),
+//   JavaScript의 map/filter는 모두 즉시 실행되지만 (adapter + consumer가 통합되어),
 //   Rust는 adapter와 consumer가 분리되어 있어 성능 최적화가 가능합니다.
 //   예를 들어: arr.iter().map(f1).map(f2).map(f3).collect()
 //     → JavaScript: 3개의 intermediate array 생성
@@ -2959,7 +2959,7 @@ fn section_20_iterators() {
     //   println!("{:?}", result);
     // JavaScript의 Generator와 달리 Rust는 컴파일타임에 최적화됩니다.
     // JavaScript의 map은 즉시 실행 (eager)이지만,
-    // Rust의 map은 collect()直到 실행되지 않음 (lazy).
+//   Rust의 map은 collect()까지 실행되지 않음 (lazy).
 
     // Iterator의 Chaining (파이프라인 패턴)
     //
@@ -3190,7 +3190,7 @@ fn section_21_concurrency() {
     //   JavaScript의 WeakRef와 유사하지만, Arc는 참조 카운트를 "원자적"으로 증가/감소
     //   스레드가 종료될 때 참조 카운트가 0이 되면 자동으로 메모리 해제
     // Mutex = Mutual Exclusion (한 번에 하나의 스레드만 접근)
-    //   JavaScript의 lock机制 (예: SharedArrayBuffer.Atomics)와 유사하지만,
+    //   JavaScript의 lock 메커니즘 (예: SharedArrayBuffer.Atomics)와 유사하지만,
     //   Rust의 Mutex는 "lock을 놓칠 때" 컴파일 에러를 발생시킴
     //
     // Arc<Mutex<T>> vs JavaScript SharedArrayBuffer:
@@ -3208,8 +3208,8 @@ fn section_21_concurrency() {
     //
     // 데이터 경합이란:
     //   1. 여러 스레드가 같은 데이터에 동시 접근
-    //   2. 적어도 한 스레드가 쓰기操作 수행
-    //   3. 동기화机制이 없음
+    //   2. 적어도 한 스레드가 쓰기 연산 수행
+    //   3. 동기화 메커니즘이 없음
     //   JavaScript: 이런 경합이 "런타임"에 발생하여 예측 불가능한 결과 초래
     //   Rust: 컴파일러가 "move + 소유권" 규칙으로 경합 자체를 방지
     //     - thread::spawn(move || ...)로 소유권 이동 → 원본 스레드에서 접근 불가
