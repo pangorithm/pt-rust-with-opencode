@@ -26,13 +26,19 @@ fn section_1_variable_declarations() {
     // JavaScript의 `let`과 같은 재할당 (mut 사용)
     let mut mutable_value: i32 = 42;
     mutable_value = 100; // OK! 재할당 가능
-    println!("Section 1 - Variable Declarations: mutable = {}", mutable_value);
+    println!(
+        "Section 1 - Variable Declarations: mutable = {}",
+        mutable_value
+    );
 
     // 타입 추론 - Rust는 타입을 명시하지 않으면 자동으로 추론
-    let inferred_number = 42;        // 자동으로 i32 추론
-    let inferred_float = 3.14_f64;   // 명시적으로 f64
-    let inferred_string = "hello";   // 자동으로 &str (문자열 슬라이스) 추론
-    println!("   Type Inference: {} (i32), {} (f64), {} (&str)", inferred_number, inferred_float, inferred_string);
+    let inferred_number = 42; // 자동으로 i32 추론
+    let inferred_float = 3.14_f64; // 명시적으로 f64
+    let inferred_string = "hello"; // 자동으로 &str (문자열 슬라이스) 추론
+    println!(
+        "   Type Inference: {} (i32), {} (f64), {} (&str)",
+        inferred_number, inferred_float, inferred_string
+    );
 
     // JavaScript의 `const`처럼 항상 불변으로 유지하고 싶다면 `mut`을 추가하지 마세요
     // 이것이 Rust의 철학입니다: 기본적으로 불변, 변경하려면 명시적으로 `mut` 선언
@@ -52,26 +58,32 @@ fn section_1_variable_declarations() {
 
 fn section_2_primitive_types() {
     // 정수 타입 - JavaScript의 `number`와 달리 크기를 명시합니다
-    let signed: i32 = -100;           // -2^31 to 2^31-1 (JavaScript의 number와 유사한 범위)
-    let unsigned: u32 = 100;          // 0 to 2^32-1 (음수 불가)
-    let big: i128 = 999_999_999_999;  // 읽기 쉬움을 위한 언더스코어 (JavaScript에서도 가능)
-    println!("Section 2 - Integers: {} (i32), {} (u32), {} (i128)", signed, unsigned, big);
+    let signed: i32 = -100; // -2^31 to 2^31-1 (JavaScript의 number와 유사한 범위)
+    let unsigned: u32 = 100; // 0 to 2^32-1 (음수 불가)
+    let big: i128 = 999_999_999_999; // 읽기 쉬움을 위한 언더스코어 (JavaScript에서도 가능)
+    println!(
+        "Section 2 - Integers: {} (i32), {} (u32), {} (i128)",
+        signed, unsigned, big
+    );
 
     // 부동 소수점 - JavaScript의 `number`는 모두 float64이지만, Rust에서는 선택 가능
-    let float32: f32 = 3.14;          // 32-bit 부동 소수점
+    let float32: f32 = 3.14; // 32-bit 부동 소수점
     let float64: f64 = 3.141592653589793; // 64-bit (JavaScript의 number와 동일)
     println!("   Float: {} (f32), {} (f64)", float32, float64);
 
     // 부울 - JavaScript의 `true`/`false`와 동일
-    let is_rust_great: bool = true;  // JavaScript의 `true`와 동일
+    let is_rust_great: bool = true; // JavaScript의 `true`와 동일
     let is_javascript_cool: bool = false;
-    println!("   Boolean: {} (Is Rust great? {})", is_javascript_cool, is_rust_great);
+    println!(
+        "   Boolean: {} (Is Rust great? {})",
+        is_javascript_cool, is_rust_great
+    );
 
     // 문자 - JavaScript의 문자는 String이지만, Rust는 별도의 char 타입을 가집니다
     // JavaScript: `'a'`과 `"a"` 모두 String (차이 없음)
     // Rust: `'a'`은 char (유니코드 스칼라, 4바이트)
     let first_letter: char = 'R';
-    let emoji: char = '🦀';            // Rust의 게 마스코트!
+    let emoji: char = '🦀'; // Rust의 게 마스코트!
     println!("   Char: '{}' (char), '{}' (emoji)", first_letter, emoji);
 }
 
@@ -86,25 +98,28 @@ fn section_2_primitive_types() {
 
 fn section_3_strings() {
     // &str: 컴파일 타임에 알려진 불변 문자열 슬라이스 (문자열 참조)
-    // JavaScript의 String에 가장 가까운 개념이지만, "슬라이스" 구분이 중요합니다
+    // JavaScript의 String에 가장 가까운 개념이지만, "슬라이스" 구분이 중요합니다.
+    // 슬라이스(&str)는 기존 문자열(String)의 일부 또는 전체를 "참조"만 하는 타입으로,
+    // 데이터 자체를 복사하지 않고 포인터(메모리 주소)와 길이만 보유합니다.
+    // String::substring()이 새 객체를 생성하는 반면, &str[0..5]는 참조만 생성하므로 성능이 우수합니다.
     let string_slice: &str = "Hello, Rust!";
     println!("Section 3 - &str: {}", string_slice);
 
     // String: 힙의 변경 가능한 String
     // JavaScript의 String은 불변이지만, Rust의 String은 변경 가능
     let mut heap_string = String::from("Hello, ");
-    heap_string.push_str("World!");   // push_str로 문자열 추가 (JavaScript의 `+=`에 해당)
+    heap_string.push_str("World!"); // push_str로 문자열 추가 (JavaScript의 `+=`에 해당)
     println!("   String: {}", heap_string);
 
     // JavaScript의 `+`로 문자열 연결은 비효율적 (새 객체 생성)
     // Rust의 `format!` 매크로는 JavaScript의 템플릿 리터럴과 유사
     let name = "Rust";
-    let combined = format!("Hello, {}!", name);  // JavaScript의 ``Hello, ${name}!``과 유사
+    let combined = format!("Hello, {}!", name); // JavaScript의 ``Hello, ${name}!``과 유사
     println!("   format!: {}", combined);
 
     // 문자열 연결 (JavaScript의 `+`에 해당)
     let mut string_concat = String::from("Hello");
-    string_concat.push('!');  // OK! 문자 추가
+    string_concat.push('!'); // OK! 문자 추가
     println!("   push!: {}", string_concat);
 }
 
@@ -122,23 +137,24 @@ fn section_4_functions() {
     // JavaScript의 `function add(a, b)`에 해당
     // JavaScript와 달리 파라미터와 반환 타입을 명시해야 합니다
     fn add(a: i32, b: i32) -> i32 {
-        a + b  // ← 마지막 표현식이 암시적 반환 값 (JavaScript의 `return a + b`와 동일)
+        a + b // ← 마지막 표현식이 암시적 반환 값 (JavaScript의 `return a + b`와 동일)
     }
     println!("   add(2, 3) = {}", add(2, 3));
 
     // JavaScript처럼 명시적 `return`도 사용 가능
     fn greet(name: &str) -> String {
-        return format!("Hello, {}!", name);  // 명시적 return
+        return format!("Hello, {}!", name); // 명시적 return
     }
     println!("   greet: {}", greet("JavaScript developer"));
 
     // JavaScript의 화살표 함수 `const double = (x) => x * 2;`에 해당
     // Rust에서도 같은 형태로 함수 정의 가능 (반환 타입 생략 시 추론)
-    let double_fn = |x: i32| -> i32 { x * 2 };  // 이것은 클로저입니다 (별도 섹션에서 상세 설명)
+    let double_fn = |x: i32| -> i32 { x * 2 }; // 이것은 클로저입니다 (별도 섹션에서 상세 설명)
     println!("   Closure double(21) = {}", double_fn(21));
 
     // JavaScript의 `void` 함수에 해당 - 반환 타입은 `()` (유니트 타입)
-    fn log_message(message: &str) {  // -> () 생략 가능 (유니트 타입)
+    fn log_message(message: &str) {
+        // -> () 생략 가능 (유니트 타입)
         println!("   [LOG] {}", message);
     }
     log_message("Function section example");
@@ -152,7 +168,7 @@ fn section_4_functions() {
         }
     }
     println!("   Optional: {}", optional_greet(Some("Alice")));
-    println!("   Optional: {}", optional_greet(None));  // JavaScript의 undefined와 유사
+    println!("   Optional: {}", optional_greet(None)); // JavaScript의 undefined와 유사
 }
 
 // ============================================================
@@ -172,25 +188,25 @@ fn section_4_functions() {
 fn section_5_ownership() {
     // String은 힙에 데이터를 저장하는 타입
     // JavaScript: 모든 String은 힙에 저장
-    let s1 = String::from("hello");  // s1이 "hello"의 소유자
-    let s2 = s1;                     // s1의 값이 s2로 **이동**
-    // println!("{}", s1);            // ERROR! s1은 더 이상 유효하지 않음 (이동됨)
-    println!("Section 5 - Ownership: s2 = {}", s2);  // OK! s2가 소유자
-    // JavaScript 개발자를 위한 설명: JS의 GC가 해주는 일을 Rust에서는 직접 관리
+    let s1 = String::from("hello"); // s1이 "hello"의 소유자
+    let s2 = s1; // s1의 값이 s2로 **이동**
+                 // println!("{}", s1);            // ERROR! s1은 더 이상 유효하지 않음 (이동됨)
+    println!("Section 5 - Ownership: s2 = {}", s2); // OK! s2가 소유자
+                                                    // JavaScript 개발자를 위한 설명: JS의 GC가 해주는 일을 Rust에서는 직접 관리
 
     // 명시적 복사를 위한 Clone
     let s3 = String::from("world");
-    let s4 = s3.clone();             // OK! 명시적 복사 - 힙 메모리도 함께 복사
-    println!("   Clone: s3 = {}, s4 = {}", s3, s4);  // 둘 다 사용 가능
-    // JavaScript 개발자를 위한 설명: JavaScript의 `JSON.parse(JSON.stringify(obj))`와 유사하지만
-    // Rust에서는 성능 고려로 명시적으로 clone()을 호출해야 합니다
+    let s4 = s3.clone(); // OK! 명시적 복사 - 힙 메모리도 함께 복사
+    println!("   Clone: s3 = {}, s4 = {}", s3, s4); // 둘 다 사용 가능
+                                                    // JavaScript 개발자를 위한 설명: JavaScript의 `JSON.parse(JSON.stringify(obj))`와 유사하지만
+                                                    // Rust에서는 성능 고려로 명시적으로 clone()을 호출해야 합니다
 
     // i32와 같은 기본 타입은 스택에 저장되므로, Move 대신 Copy가 발생
     let x = 42;
-    let y = x;                       // OK! x가 복사됨 (Copy trait 구현 타입)
-    println!("   Copy: x = {}, y = {}", x, y);  // 둘 다 사용 가능
-    // JavaScript 개발자를 위한 설명: JavaScript의 number는 모두 기본 타입이므로
-    // 이것이 JavaScript의 동작과 가장 유사합니다
+    let y = x; // OK! x가 복사됨 (Copy trait 구현 타입)
+    println!("   Copy: x = {}, y = {}", x, y); // 둘 다 사용 가능
+                                               // JavaScript 개발자를 위한 설명: JavaScript의 number는 모두 기본 타입이므로
+                                               // 이것이 JavaScript의 동작과 가장 유사합니다
 }
 
 // ============================================================
@@ -205,14 +221,17 @@ fn section_5_ownership() {
 fn section_6_references_and_borrowing() {
     // 불변 참조 - 값 복사 없이 참조만 전달
     let s1 = String::from("hello");
-    let len = calculate_length(&s1);  // &s1: 불변 참조 (빌링)
-    println!("Section 6 - Borrowing: Length is {}, s1 still valid: {}", len, s1);
+    let len = calculate_length(&s1); // &s1: 불변 참조 (빌링)
+    println!(
+        "Section 6 - Borrowing: Length is {}, s1 still valid: {}",
+        len, s1
+    );
     // JavaScript 개발자를 위한 설명: JavaScript의 객체 참조와 유사하지만
     // Rust는 컴파일타임에 "이 참조가 값을 변경하지 않을 것"을 보장
 
     // 변경 가능 참조 - 값을 변경할 수 있는 참조
     let mut s2 = String::from("hello");
-    change_string(&mut s2);            // &mut s2: 변경 가능 참조 (변경 가능 빌링)
+    change_string(&mut s2); // &mut s2: 변경 가능 참조 (변경 가능 빌링)
     println!("   Mutable borrow: {}", s2);
     // JavaScript 개발자를 위한 설명: JavaScript의 객체는 기본적으로 변경 가능합니다.
     // Rust에서는 변경하려면 명시적으로 `&mut`을 요청해야 합니다
@@ -220,18 +239,18 @@ fn section_6_references_and_borrowing() {
     // ✅ 동시에 여러 불변 참조 허용
     let _r1 = &s1;
     let _r2 = &s1;
-    let _r3 = &s1;  // 무한히 많은 불변 참조 허용
+    let _r3 = &s1; // 무한히 많은 불변 참조 허용
 
     // ❌ 변경 가능 참조와 불변 참조를 동시에 가질 수 없음
     // let _r4 = &mut s2;  // ERROR! 불변 참조가 있을 때 변경 가능 참조를 가질 수 없음
 }
 
 fn calculate_length(s: &String) -> usize {
-    s.len()  // JavaScript의 `string.length`에 해당
+    s.len() // JavaScript의 `string.length`에 해당
 }
 
 fn change_string(s: &mut String) {
-    s.push_str(", world!");  // JavaScript의 `string += ", world!"`에 해당
+    s.push_str(", world!"); // JavaScript의 `string += ", world!"`에 해당
 }
 
 // ============================================================
@@ -273,12 +292,12 @@ fn section_7_structs() {
         sign_in_count: 1,
         active: true,
     };
-    user2.email = String::from("bob_new@example.com");  // OK! 변경 가능으로 변경
+    user2.email = String::from("bob_new@example.com"); // OK! 변경 가능으로 변경
     println!("   After change: {}", user2.email);
 
     // struct 업데이트 문법 (spread operator과 유사)
     let user3 = User {
-        ..user2  // user2의 나머지 필드 복사
+        ..user2 // user2의 나머지 필드 복사
     };
     // JavaScript의 `{...user2, email: "new"}`와 유사
     println!("   Spread: {}", user3.email);
@@ -296,10 +315,10 @@ fn section_8_enums_and_match() {
     // JavaScript의 `const Direction = { UP: 'up', DOWN: 'down', LEFT: 'left', RIGHT: 'right' };`
     // 하지만 Rust Enum은 데이터를 담을 수 있습니다!
     enum Message {
-        Quit,                              // 데이터 없는 variant
-        Move { x: i32, y: i32 },           // 객체 데이터 (JavaScript의 `{ x: 1, y: 2 }`)
-        Write(String),                      // 문자열 데이터
-        ChangeColor(i32, i32, i32),         // 튜플 데이터 (Java의 Tuple과 유사)
+        Quit,                       // 데이터 없는 variant
+        Move { x: i32, y: i32 },    // 객체 데이터 (JavaScript의 `{ x: 1, y: 2 }`)
+        Write(String),              // 문자열 데이터
+        ChangeColor(i32, i32, i32), // 튜플 데이터 (Java의 Tuple과 유사)
     }
 
     // JavaScript는 처리에 `switch (msg)`를 사용
@@ -340,15 +359,15 @@ fn section_9_pattern_matching() {
     let number = 42;
     match number {
         0 => println!("   0"),
-        1 | 2 | 3 => println!("   1, 2, or 3"),  // |로 여러 값 매칭
-        10..=20 => println!("   10~20 range"),   // 범위 매칭 (JavaScript에서는 불가능)
+        1 | 2 | 3 => println!("   1, 2, or 3"), // |로 여러 값 매칭
+        10..=20 => println!("   10~20 range"),  // 범위 매칭 (JavaScript에서는 불가능)
         21..=100 => println!("   21~100 range"),
-        _ => println!("   Other number"),          // _ = 기본 케이스 (JavaScript의 switch default)
+        _ => println!("   Other number"), // _ = 기본 케이스 (JavaScript의 switch default)
     }
 
     // 해체 - JavaScript의 구조 분해 할당과 유사
-    let point = (3, 5);  // JavaScript: const point = [3, 5];
-    let (x, y) = point;  // JavaScript: const [x, y] = point;
+    let point = (3, 5); // JavaScript: const point = [3, 5];
+    let (x, y) = point; // JavaScript: const [x, y] = point;
     println!("   Destructuring: ({}, {})", x, y);
 
     // 객체 해체 - JavaScript의 `const { name, age } = user;`와 유사
@@ -357,7 +376,7 @@ fn section_9_pattern_matching() {
         y: i32,
     }
     let p = Point2D { x: 42, y: 99 };
-    let Point2D { x: px, y: py } = p;  // JavaScript: const { x: px, y: py } = p;
+    let Point2D { x: px, y: py } = p; // JavaScript: const { x: px, y: py } = p;
     println!("   Object destructuring: ({}, {})", px, py);
 
     // if let - JavaScript의 `if (condition)`에 해당
@@ -380,7 +399,7 @@ fn section_9_pattern_matching() {
 
 fn section_10_collections() {
     // Vec(Vector)은 JavaScript의 Array에 해당
-    let mut numbers: Vec<i32> = vec![1, 2, 3, 4, 5];  // JavaScript: let numbers = [1, 2, 3, 4, 5];
+    let mut numbers: Vec<i32> = vec![1, 2, 3, 4, 5]; // JavaScript: let numbers = [1, 2, 3, 4, 5];
     println!("Section 10 - Vec: {:?}", numbers);
 
     // JavaScript의 array.push에 해당
@@ -403,7 +422,7 @@ fn section_10_collections() {
     // HashMap은 JavaScript의 Map에 해당
     use std::collections::HashMap;
     let mut scores: HashMap<String, i32> = HashMap::new();
-    scores.insert("Rust".to_string(), 95);   // JavaScript: scores.set("Rust", 95);
+    scores.insert("Rust".to_string(), 95); // JavaScript: scores.set("Rust", 95);
     scores.insert("JavaScript".to_string(), 85);
     scores.insert("Python".to_string(), 90);
 
@@ -429,7 +448,7 @@ fn section_10_collections() {
 
 fn section_11_closures() {
     // JavaScript의 `const double = (x) => x * 2;`에 해당
-    let double_fn = |x| x * 2;  // 파라미터 타입과 반환 타입은 추론
+    let double_fn = |x| x * 2; // 파라미터 타입과 반환 타입은 추론
     println!("Section 11 - Closure: double(21) = {}", double_fn(21));
 
     // 타입을 명시적으로 지정
@@ -452,7 +471,7 @@ fn section_11_closures() {
     // 클로저는 주변 스코프의 변수를 캡처할 수 있습니다
     // JavaScript의 중첩 함수가 외부 변수에 접근하는 것과 유사
     let multiplier = 10;
-    let multiply_by_ten = |x| x * multiplier;  // multiplier를 캡처
+    let multiply_by_ten = |x| x * multiplier; // multiplier를 캡처
     println!("   captured: multiply_by_ten(5) = {}", multiply_by_ten(5));
 }
 
@@ -469,7 +488,7 @@ fn section_11_closures() {
 fn section_12_traits() {
     // Java의 `interface Drawable { void draw(); }`에 해당
     trait Drawable {
-        fn draw(&self) -> String;  // JavaScript: `draw() { return '...'; }`
+        fn draw(&self) -> String; // JavaScript: `draw() { return '...'; }`
     }
 
     // struct에 Trait 구현 (JavaScript의 class에 해당)
@@ -498,7 +517,10 @@ fn section_12_traits() {
     // 하지만 Rust는 타입 안전합니다 (구현체는 모두 Drawable이 될 수 있음)
     let shapes: Vec<Box<dyn Drawable>> = vec![
         Box::new(Circle { radius: 5.0 }),
-        Box::new(Rectangle { width: 10.0, height: 20.0 }),
+        Box::new(Rectangle {
+            width: 10.0,
+            height: 20.0,
+        }),
     ];
 
     for shape in &shapes {
@@ -508,7 +530,7 @@ fn section_12_traits() {
     // JavaScript에서는 `obj.toString()`을 호출하려면 `obj`가 toString 메서드를 가져야 합니다
     // Rust에서는 Trait 구현이 자동으로 `to_string()`을 추가합니다!
     let circle = Circle { radius: 5.0 };
-    println!("   Circle: {:?}", circle);  // Debug trait로 출력
+    println!("   Circle: {:?}", circle); // Debug trait로 출력
 }
 
 // ============================================================
@@ -533,8 +555,8 @@ fn section_13_error_handling() {
     fn safe_parse(s: &str) -> Result<i32, std::num::ParseIntError> {
         // JavaScript: try { return parseInt(s); } catch(e) { throw e; }
         // Rust: `?` 연산자는 오류가 발생하면 함수를 즉시 종료
-        let num = s.parse::<i32>()?;  // 이 값이 Err이면 함수가 즉시 오류 반환
-        Ok(num)  // OK면 Ok로 감싸서 반환
+        let num = s.parse::<i32>()?; // 이 값이 Err이면 함수가 즉시 오류 반환
+        Ok(num) // OK면 Ok로 감싸서 반환
     }
 
     // println!("safe_parse('456'): {:?}", safe_parse("456"));
@@ -562,7 +584,7 @@ fn section_14_generics() {
     // JavaScript: function identity(x) { return x; }  // 타입 없음
     // Rust: 제네릭으로 타입을 명시적으로 정의 가능
     fn identity<T>(value: T) -> T {
-        value  // 모든 타입으로 작동
+        value // 모든 타입으로 작동
     }
     println!("Section 14 - Generics: identity(42) = {}", identity(42));
     println!("   identity(\"hello\") = {}", identity("hello"));
@@ -574,7 +596,7 @@ fn section_14_generics() {
 
     // JavaScript의 Array.map에 해당하는 Rust의 제네릭 함수
     fn first<T>(slice: &[T]) -> &T {
-        &slice[0]  // 첫 번째 요소 반환
+        &slice[0] // 첫 번째 요소 반환
     }
     let numbers2: &[i32] = &[10, 20, 30];
     let first_num = first(numbers2);
@@ -604,7 +626,10 @@ fn section_15_lifetimes() {
     }
 
     let result = longest("hello", "world!");
-    println!("Section 15 - Lifetime: longest('hello', 'world!') = {}", result);
+    println!(
+        "Section 15 - Lifetime: longest('hello', 'world!') = {}",
+        result
+    );
     // JavaScript: `const longest = (a, b) => a.length > b.length ? a : b;` 동일한 로직
     // 하지만 Rust는 컴파일타임에 "result가 s1/s2보다 오래 살아남지 않을 것"을 보장
 
@@ -678,9 +703,9 @@ fn section_17_modules_and_crates() {
 
     pub fn divide(a: i32, b: i32) -> Result<f64, String> {
         if b == 0 {
-            Err("Division by zero!".to_string())  // JavaScript: throw new Error("Division by zero!")
+            Err("Division by zero!".to_string()) // JavaScript: throw new Error("Division by zero!")
         } else {
-            Ok(a as f64 / b as f64)  // JavaScript: return a / b
+            Ok(a as f64 / b as f64) // JavaScript: return a / b
         }
     }
 
@@ -692,19 +717,23 @@ fn section_17_modules_and_crates() {
     let result_add = add(5, 3);
     let result_multiply = multiply(4, 7);
     let result_divide = divide(10, 2).unwrap_or(0.0);
-    println!("   add(5, 3) = {}, multiply(4, 7) = {}, divide(10, 2) = {:.1}",
-        result_add, result_multiply, result_divide);
+    println!(
+        "   add(5, 3) = {}, multiply(4, 7) = {}, divide(10, 2) = {:.1}",
+        result_add, result_multiply, result_divide
+    );
 
     // JavaScript의 `export default`에 해당하는 패턴
     // Rust에는 `export default`가 없지만, pub struct로 대체 가능
     struct Calculator {
-        history: Vec<String>,  // JavaScript: private field처럼 사용 (pub 없으면 외부 접근 불가)
+        history: Vec<String>, // JavaScript: private field처럼 사용 (pub 없으면 외부 접근 불가)
     }
 
     impl Calculator {
         fn new() -> Self {
             // JavaScript: `constructor() { this.history = []; }`
-            Calculator { history: Vec::new() }
+            Calculator {
+                history: Vec::new(),
+            }
         }
 
         // JavaScript: `add(a, b) { this.history.push(\`${a} + ${b}\`); return a + b; }`
@@ -793,7 +822,7 @@ fn section_18_file_io() {
             if let Some(first_line) = content.lines().next() {
                 println!("   첫 줄: {}", first_line);
             }
-        },
+        }
         Err(e) => {
             // JavaScript의 catch(e) 블록에 해당
             // JavaScript: console.error('File read error:', e.message);
@@ -836,7 +865,8 @@ fn section_18_file_io() {
     let dir_result = std::fs::read_dir(".");
     if let Ok(entries) = dir_result {
         let mut count = 0;
-        for entry in entries.take(5) {  // 최대 5개만 표시 (JavaScript: files.slice(0, 5))
+        for entry in entries.take(5) {
+            // 최대 5개만 표시 (JavaScript: files.slice(0, 5))
             if let Ok(e) = entry {
                 if let Some(name) = e.path().file_name() {
                     println!("   디렉토리 항목: {:?}", name);
@@ -859,7 +889,12 @@ fn section_18_file_io() {
     //   Rust: std::fs::metadata("Cargo.toml").map(|m| m.len())
     if let Ok(metadata) = std::fs::metadata("Cargo.toml") {
         println!("   Cargo.toml 크기: {} bytes", metadata.len());
-        println!("   수정 시간: {:?}", metadata.modified().unwrap_or_else(|_| std::time::SystemTime::UNIX_EPOCH));
+        println!(
+            "   수정 시간: {:?}",
+            metadata
+                .modified()
+                .unwrap_or_else(|_| std::time::SystemTime::UNIX_EPOCH)
+        );
     }
 
     // JavaScript의 `fs.appendFileSync()`에 해당하는 Rust 함수
@@ -945,11 +980,17 @@ fn section_19_testing() {
 
     // JavaScript: expect(isEven(4)).toBeTruthy();
     // Rust: assert!(is_even_for_test(4));
-    println!("   is_even_for_test(4) = {} (expect: true)", is_even_for_test(4));
+    println!(
+        "   is_even_for_test(4) = {} (expect: true)",
+        is_even_for_test(4)
+    );
 
     // JavaScript: expect(isEven(3)).toBeFalsy();
     // Rust: assert!(!is_even_for_test(3));
-    println!("   is_even_for_test(3) = {} (expect: false)", is_even_for_test(3));
+    println!(
+        "   is_even_for_test(3) = {} (expect: false)",
+        is_even_for_test(3)
+    );
 
     // JavaScript의 `expect(value).toBeGreaterThan(5)`에 해당하는 것이 Rust의 `assert!(value > 5)`
     let result = add_for_test(10, 5);
@@ -1010,7 +1051,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_panic() {
-        panic!("This test should panic");  // JavaScript: throw new Error("test");
+        panic!("This test should panic"); // JavaScript: throw new Error("test");
     }
 
     // JavaScript의 `describe('math', () => { ... });`에 해당하는 것이 Rust의 `mod`
@@ -1087,7 +1128,7 @@ fn section_20_iterators() {
     //       arr.iter().for_each(|x| println!("{}", x));
     println!("   for_each:");
     numbers.iter().take(3).for_each(|x| print!("   {} ", x));
-    println!();  // 줄바꿈 (JavaScript: console.log()와 동일)
+    println!(); // 줄바꿈 (JavaScript: console.log()와 동일)
 
     // JavaScript의 Array.find() = Rust의 Iterator::find()
     // JavaScript: const first = arr.find(x => x > 3); // 4
@@ -1150,10 +1191,11 @@ fn section_20_iterators() {
     // Iterator의 Chaining (파이프라인 패턴)
     // JavaScript: const result = arr.filter(x => x > 2).map(x => x * 2).slice(0, 3);
     // Rust: let result: Vec<i32> = arr.iter().filter(|x| **x > 2).map(|x| x * 2).take(3).collect();
-    let chained: Vec<i32> = numbers.iter()
-        .filter(|x| **x > 2)      // JavaScript: filter(x => x > 2)
-        .map(|x| *x * 2)           // JavaScript: map(x => x * 2)
-        .take(3)                   // JavaScript: slice(0, 3)
+    let chained: Vec<i32> = numbers
+        .iter()
+        .filter(|x| **x > 2) // JavaScript: filter(x => x > 2)
+        .map(|x| *x * 2) // JavaScript: map(x => x * 2)
+        .take(3) // JavaScript: slice(0, 3)
         .collect();
     println!("   chain pipeline: {:?}", chained);
 
@@ -1208,7 +1250,7 @@ fn section_21_concurrency() {
     let handle = std::thread::spawn(|| {
         // JavaScript: `setTimeout(() => { console.log('from worker'); }, 100);`
         println!("   Hello from spawned thread!");
-        42  // 반환값 (JavaScript: `self.postMessage(42)`)
+        42 // 반환값 (JavaScript: `self.postMessage(42)`)
     });
 
     // JavaScript의 `worker.onmessage = (e) => console.log(e.data);`
@@ -1257,8 +1299,8 @@ fn section_21_concurrency() {
     // Rust: `tx.send((1, vec![1, 2, 3])).unwrap();`
     std::thread::spawn(move || {
         for i in 1..=5 {
-            tx.send(i).unwrap();  // JavaScript: `postMessage(i)`
-            // JavaScript: `setTimeout(() => worker.postMessage(i), i * 100);`
+            tx.send(i).unwrap(); // JavaScript: `postMessage(i)`
+                                 // JavaScript: `setTimeout(() => worker.postMessage(i), i * 100);`
         }
     });
 
