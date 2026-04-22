@@ -1163,7 +1163,7 @@ fn section_10_collections() {
     // .map(|x| x * 2) → 각 요소를 2배로 변환
     // .collect() → 결과를 Vec<i32>로 모음
     // JavaScript의 map은 새 배열을 생성하지만,
-    // Rust의 map도 Lazy Iterator이므로 collect()에서じめて 실제 생성됨.
+    // Rust의 map도 Lazy Iterator이므로 collect()에서만 실제로 생성됨.
     println!("   map(x*2): {:?}", doubled);
 
     // JavaScript의 array.filter에 해당
@@ -1177,7 +1177,7 @@ fn section_10_collections() {
     // .copied() → &i32를 i32로 복사 (Copy trait 구현이므로 빠름)
     // .collect() → Vec<i32>로 모음
     // JavaScript의 filter는 새 배열을 생성하지만,
-    // Rust의 filter도 Lazy Iterator이므로 collect()에서じめて 실제 생성됨.
+    // Rust의 filter도 Lazy Iterator이므로 collect()에서만 실제로 생성됨.
     println!("   filter(even): {:?}", evens);
 
     // HashMap은 JavaScript의 Map에 해당
@@ -1299,7 +1299,7 @@ fn section_11_closures() {
     // .map(|x| x * x) → 각 요소를 제곱
     // .collect() → Vec<i32>로 결과 모음
     // JavaScript의 map은 새 배열을 즉시 생성하지만,
-    // Rust의 map은 Lazy Iterator이므로 collect()에서じめて 실제 생성됨.
+    // Rust의 map은 Lazy Iterator이므로 collect()에서만 실제로 생성됨.
     println!("   map(x*x): {:?}", squared);
 
     // JavaScript의 `arr.filter(x => x > 2)`에 해당
@@ -2744,7 +2744,7 @@ mod tests {
 //     → map이 먼저 실행되어 새 배열 생성 → filter가 실행
 //   Rust의 Iterator는 Lazy입니다 (lazy).
 //   Rust: arr.iter().map(|x| x * 2).filter(|x| *x > 5).collect();
-//     → collect()에서じめて 실제로 실행됨
+//     → collect()에서만 실제로 실행됨
 //     → 한 번의 순회로 모든 처리를 완료 (최적화!)
 //
 // 성능 비교:
@@ -2757,7 +2757,7 @@ mod tests {
 //      이 메서드들은 새로운 Iterator를 반환할 뿐, 실제 처리는 안 함
 //   2. Consumer (소비자) - Eager, 즉시 실행 함
 //      .collect(), .for_each(), .sum(), .count() 등
-//      이 메서드들이 Iterator의 "트리거"로, 이때じめて 실제 처리가 실행됨
+//      이 메서드들이 Iterator의 "트리거"로, 이때부터 실제 처리가 실행됨
 //   JavaScript의 map/filter는 모두 즉시 실행되지만 (adapter + consumer가 통합되어),
 //   Rust는 adapter와 consumer가 분리되어 있어 성능 최적화가 가능합니다.
 //   예를 들어: arr.iter().map(f1).map(f2).map(f3).collect()
@@ -2799,7 +2799,7 @@ fn section_20_iterators() {
     // .map(|x| x * 2) → 각 요소를 2배로 변환
     // .collect() → Vec<i32>로 결과 모음
     // JavaScript: arr.map()은 즉시 새 배열을 생성하지만,
-    // Rust: map()은 Lazy Iterator이므로 collect()에서じめて 생성됨.
+    // Rust: map()은 Lazy Iterator이므로 collect()에서만 실제로 생성됨.
     println!("   map(x*2): {:?}", doubled);
 
     // JavaScript의 Array.filter() = Rust의 Iterator::filter()
