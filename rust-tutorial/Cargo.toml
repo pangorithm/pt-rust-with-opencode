@@ -1,0 +1,12 @@
+[package]
+name = "rust-tutorial"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Rust의 비동기 런타임 (JavaScript의 Node.js 이벤트 루프와 유사한 역할)
+# JavaScript가 단일 스레드 이벤트 루프로 비동기 처리를 하듯,
+# Rust는 tokio를 통해 경량의 green thread로 비동기 처리를 합니다.
+tokio = { version = "1.0", features = ["full"] }
+# HashMap의 해시 함수를 위한 유틸리티 (Java의 HashMap 해시 코드와 유사)
+random = "0.1"
