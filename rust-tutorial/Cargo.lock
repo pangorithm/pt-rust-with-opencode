@@ -104,12 +104,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "random"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8a4d4b7fe8b83b4abe1058ec1bc86e6390d848a0039a65b728c193e39ee6318"
-
-[[package]]
 name = "redox_syscall"
 version = "0.5.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -122,7 +116,6 @@ dependencies = [
 name = "rust-tutorial"
 version = "0.1.0"
 dependencies = [
- "random",
  "tokio",
 ]
 

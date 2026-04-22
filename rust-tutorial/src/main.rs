@@ -34,7 +34,7 @@
 //   JavaScript                Rust                      설명
 //   ──────────────────────    ──────────────────────    ────────────────────────
 //   const x = 42;             let x: i32 = 42;          재할당 불가 (기본 불변)
-//   let y = 42;                let mut y: i32 = 42;      재할 assignment 가능 (mut 필요)
+//   let y = 42;                let mut y: i32 = 42;      재할당 가능 (mut 필요)
 //   let z;                    ERROR!                    Rust는 선언만 허용하지 않음
 //
 // 핵심 차이점:
@@ -53,7 +53,7 @@
 
 fn section_1_variable_declarations() {
     // JavaScript의 `const`와 유사: 재할당 불가
-    let immutable_value: i32 = 42;
+    let _immutable_value: i32 = 42;
     // immutable_value = 100; // ERROR! 재할당 불가
     // JavaScript: const x = 42; x = 100; // TypeError!
     // Rust의 불변은 JavaScript의 const보다 엄격합니다.
@@ -76,8 +76,18 @@ fn section_1_variable_declarations() {
     //   변경하려면 mut 키워드를 명시해야 합니다.
 
     // JavaScript의 `let`과 같은 재할당 (mut 사용)
+    #[allow(unused_assignments)]
     let mut mutable_value: i32 = 42;
-    mutable_value = 100; // OK! 재할당 가능
+    mutable_value = 100; // 재할당 가능!
+    // JavaScript: let x = 42; x = 100; // 가능
+    // Rust의 mut은 JavaScript의 let과 유사한 "변경 가능" semantics을 가집니다.
+    // 다만 JavaScript에서는 모든 변수가 기본적으로 변경 가능하지만,
+    // Rust에서는 mut을 명시해야 변경 가능합니다.
+    // 이 차이는 Rust가 불변성을 기본으로 하여 실수를 방지하기 위한 설계입니다.
+    println!(
+        "Section 1 - Variable Declarations: mutable = {}",
+        mutable_value
+    );
     // JavaScript: let x = 42; x = 100; // 가능
     // Rust의 mut은 JavaScript의 let과 유사한 "변경 가능" semantics을 가집니다.
     // 다만 JavaScript에서는 모든 변수가 기본적으로 변경 가능하지만,
@@ -788,7 +798,7 @@ fn section_7_structs() {
         sign_in_count: 1,                     // JavaScript: 1
         active: true,                         // JavaScript: true
     };
-    println!("Section 7 - Struct: {} ({})", user1.username, user1.email);
+    println!("Section 7 - Struct: {} ({}, {} sign-ins)", user1.username, user1.email, user1.sign_in_count);
 
     // 필드 접근 - JavaScript의 `user1.username`에 해당
     // JavaScript: console.log(user1.username); // "alice_dev"
@@ -915,18 +925,22 @@ fn section_8_enums_and_match() {
     //     // break를 잊으면 fall-through 발생!
     //   }
     // Rust:
-    let msg = Message::Move { x: 10, y: 20 };
-    match msg {
-        Message::Quit => println!("   Quit message"),
-        // Message::Quit는 데이터가 없는 variant이므로 패턴이 단순합니다.
-        Message::Move { x, y } => println!("   Move: ({}, {})", x, y),
-        // { x, y }는 struct variant의 필드를 해체합니다.
-        // JavaScript: const { x, y } = msg; console.log(x, y);
-        Message::Write(text) => println!("   Write: {}", text),
-        // (text)는 tuple variant의 첫 번째 요소를 해체합니다.
-        Message::ChangeColor(r, g, b) => println!("   ChangeColor: RGB({}, {}, {})", r, g, b),
-        // (r, g, b)는 tuple variant의 세 요소를 해체합니다.
+
+    // 모든 variant를 예시와 매칭으로 보여주기 위한 함수
+    fn show_message(msg: Message) {
+        match msg {
+            Message::Quit => println!("   Quit message"),
+            Message::Move { x, y } => println!("   Move: ({}, {})", x, y),
+            Message::Write(text) => println!("   Write: {}", text),
+            Message::ChangeColor(r, g, b) => println!("   ChangeColor: RGB({}, {}, {})", r, g, b),
+        }
     }
+
+    let msg = Message::Move { x: 10, y: 20 };
+    show_message(Message::Quit);
+    show_message(msg);
+    show_message(Message::Write(String::from("Hello, Rust!")));
+    show_message(Message::ChangeColor(255, 128, 0));
     // JavaScript의 switch와 유사하지만, Rust는 모든 경우를 처리해야 함 (exhaustive match)
     // JavaScript: switch에서 break를 잊으면 fall-through 발생 가능
     // Rust: match는 자동으로 fall-through가 없고, 모든 경우를 처리해야 함
@@ -1603,7 +1617,7 @@ fn section_13_error_handling() {
         // Rust: Ok(num) → Result<i32, E>를 반환
     }
 
-    // println!("safe_parse('456'): {:?}", safe_parse("456"));
+    println!("   safe_parse('456'): {:?}", safe_parse("456"));
 
     // Option<T> - JavaScript의 null/undefined를 처리하는 타입
     // Java의 Optional과 매우 유사
@@ -2035,14 +2049,15 @@ fn section_17_modules_and_crates() {
     //   const result_multiply = multiply(4, 7);
     // Rust:
     let result_add = add(5, 3);
+    let result_subtract = subtract(10, 3);
     let result_multiply = multiply(4, 7);
     let result_divide = divide(10, 2).unwrap_or(0.0);
     // divide(10, 2) → Ok(5.0)
     // unwrap_or(0.0) → Ok이면 값을 추출, Err이면 0.0 반환
     // JavaScript: const result = divide(10, 2) || 0;
     println!(
-        "   add(5, 3) = {}, multiply(4, 7) = {}, divide(10, 2) = {:.1}",
-        result_add, result_multiply, result_divide
+        "   add(5, 3) = {}, subtract(10, 3) = {}, multiply(4, 7) = {}, divide(10, 2) = {:.1}",
+        result_add, result_subtract, result_multiply, result_divide
     );
 
     // JavaScript의 `export default`에 해당하는 패턴
@@ -2425,6 +2440,11 @@ fn section_18_file_io() {
 
 fn section_19_testing() {
     println!("Section 19 - Testing");
+
+    // 실제 함수 호출 (JS의 test case 실행과 유사)
+    // JavaScript: `test('addPositive(1, 2) equals 3', () => { expect(addPositive(1, 2)).toBe(3); });`
+    println!("   add_positive(1, 2) = {}", add_positive(1, 2));
+    println!("   is_even(4) = {}, is_even(3) = {}", is_even(4), is_even(3));
 
     // JavaScript (Jest):
     //   test('adds 1 + 2', () => {
