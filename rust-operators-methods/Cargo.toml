@@ -1,0 +1,8 @@
+[package]
+name = "rust-operators-methods"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Rust의 비동기 런타임
+tokio = { version = "1.0", features = ["full"] }
