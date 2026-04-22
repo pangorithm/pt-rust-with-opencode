@@ -5,12 +5,12 @@ edition = "2021"
 
 [dependencies]
 # Tonic: gRPC 구현을 위한 강력한 프레임워크
-tonic = "0.11"
+tonic = "0.12"
 # Prost: Protocol Buffers를 Rust 구조체로 변환해 직렬화/역직렬화 라이브러리
-prost = "0.12"
+prost = "0.13"
 # Tokio: 비동기 런타임
 tokio = { version = "1.0", features = ["full"] }
 
 [build-dependencies]
 # 컴드 시점에 .proto 파일을 컴파일하여 Rust 코드를 생성하기 위한 라이브러리
-tonic-build = "0.11"
+tonic-build = "0.12"
