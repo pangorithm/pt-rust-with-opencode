@@ -6,9 +6,7 @@ edition = "2021"
 [dependencies]
 # Tokio: 비동기 런타임
 tokio = { version = "1.0", features = ["full"] }
-# tokio-tungstenite: Tokio 기반의 WebSocket 라이브러리
+# tokio-tungstenite: Tokio 기반의 WebSocket 라이브러리 (tungstenite 포함)
 tokio-tungstenite = "0.21"
 # futures-util: Stream과 Sink 트레이트를 사용하기 위한 유틸리티
 futures-util = "0.3"
-# tungstenite: WebSocket 메시지 타입 정의
-tungstenite = "0.21"

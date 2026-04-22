@@ -8,7 +8,6 @@ use futures_util::{
 use std::net::SocketAddr;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
-use tokio_tungstenite::tungstenite::protocol::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
