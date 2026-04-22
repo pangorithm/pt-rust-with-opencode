@@ -627,9 +627,9 @@ fn section_9_number_methods() {
 //
 // JavaScript          Rust                      설명
 // ──────────────────  ────────────────────────  ─────────────────────────
-// (없음)              bool.then(f)              true일 때만 값 반환
-// (없음)              bool.then_with(f)         true일 때만 lazy 평가
-// (없음)              bool.unwrap_or(default)   true/false에서 값 선택
+// if (x) return f()  bool.then(f)              true일 때만 Some(f())
+// if (x) return f()   if x { Some(f()) }        lazy 평가 (Rust 표준 패턴)
+// x ? a : b           if x { a } else { b }     조건부 값 선택
 
 fn section_10_boolean_methods() {
     println!("Section 10 - Boolean Methods");
@@ -645,17 +645,27 @@ fn section_10_boolean_methods() {
     let result2 = is_python_cool.then(|| "Python is great!");
     println!("   false.then('...') = {:?}", result2);
 
-    // lazy 평가 (값 생성 비용이 높을 때 유용)
-    // JavaScript: const x = condition ? expensiveFunction() : undefined;
-    // Rust에서는 if-let으로 동일하게 구현:
-    if is_rust_great {
+    // lazy 평가 (값 생성 비용이 높을 때 유용) - JS: condition ? expensiveFn() : undefined
+    // Rust: if-let 패턴으로 lazy 평가 구현
+    let expensive = if is_rust_great {
         println!("       [비용이 큰 작업 실행!]");
-        println!("   condition ? expensive() : undefined → \"computed\"");
-    }
+        Some("computed")
+    } else {
+        None
+    };
+    println!("   if condition {{ Some(expensive()) }} = {:?}", expensive);
 
-    if !is_python_cool {
-        println!("   false → undefined (실행 안 됨)");
-    }
+    let not_expensive = if is_python_cool {
+        println!("       [이곳은 실행 안 됨]");
+        Some("computed")
+    } else {
+        None
+    };
+    println!("   if !condition → None = {:?}", not_expensive);
+
+    // 조건부 값 선택 - JS: x ? a : b
+    let message: &str = if is_rust_great { "Rust is great!" } else { "N/A" };
+    println!("   if condition ? \"a\" : \"b\" = \"{}\"", message);
 }
 
 // ============================================================
@@ -667,9 +677,11 @@ fn section_10_boolean_methods() {
 //
 // JavaScript              Rust                      설명
 // ──────────────────────  ────────────────────────  ─────────────────────────
-// x || default            x.unwrap_or(default)      null 체크 + 기본값
 // x ?? default            x.unwrap_or(default)      null 체크 + 기본값
+// x ?? default            x.unwrap_or_else(f)       null 체크 + lazy 기본값
 // x ? x.toString() : d    x.map_or(default, f)      Some일 때 변환
+// (없음)                  x.flatten()               Option<Option<T>> → Option<T>
+// (없음)                  x.transpose()             Option<Result<T,E>> → Result<Option<T>,E>
 // !!x                     x.is_some()               값 존재 여부
 // (없음)                  x.is_none()               None 여부
 // (없음)                  x.expect(msg)             None이면 에러 메시지 표시
@@ -677,8 +689,13 @@ fn section_10_boolean_methods() {
 fn section_11_option_methods() {
     println!("Section 11 - Option Methods");
 
-    let some_value: Option<i32> = Some(42);
+  let some_value: Option<i32> = Some(42);
     let none_value: Option<i32> = None;
+    let _opt_lazy: Option<i32> = None;
+    let opt_flat1: Option<Option<i32>> = Some(Some(42));
+    let opt_flat2: Option<Option<i32>> = Some(None);
+    let opt_trans1: Result<Option<i32>, String> = Ok(Some(42));
+    let opt_trans2: Result<Option<i32>, String> = Err("failed".to_string());
 
     // unwrap() - Some에서 값 추출 (None이면 패닉)
     // JavaScript: x (null이면 에러!)
@@ -692,9 +709,13 @@ fn section_11_option_methods() {
     println!("   None.unwrap_or(\"Guest\") = {}",
         None::<String>.unwrap_or("Guest".to_string()));
 
-    // unwrap_or_else() - lazy 기본값
-    let result = none_value.unwrap_or_else(|| 100);
-    println!("   None.unwrap_or_else(|| 100) = {}", result);
+    // unwrap_or_else() - lazy 기본값 (값 생성 비용이 높을 때 유용)
+    // JavaScript: const name = maybeName ?? (() => fetchDefault());
+    let lazy_result = _opt_lazy.unwrap_or_else(|| {
+        println!("       [lazy: 기본값 생성!]");
+        999
+    });
+    println!("   None.unwrap_or_else(|| 999) = {}", lazy_result);
 
     // map() - Some일 때 변환
     let doubled = some_value.map(|x| x * 2);
@@ -724,9 +745,13 @@ fn section_11_option_methods() {
         some_value.expect("found!"));
 
     // flatten() - Option<Option<T>> → Option<T>
-    let nested: Option<Option<i32>> = Some(Some(42));
-    println!("   Some(Some(42)).flatten() = {:?}", nested.flatten());
-    println!("   Some(None).flatten() = {:?}", Some(None::<i32>).flatten());
+    println!("   Some(Some(42)).flatten() = {:?}", opt_flat1.flatten());
+    println!("   Some(None).flatten() = {:?}", opt_flat2.flatten());
+
+    // transpose() - Option<Result<T, E>> → Result<Option<T>, E>
+    // Option<Result>를 Result<Option>으로 뒤집습니다
+    println!("   Ok(Some(42)).transpose() = {:?}", opt_trans1.transpose());
+    println!("   Err(\"..\").transpose() = {:?}", opt_trans2.transpose());
 }
 
 // ============================================================
